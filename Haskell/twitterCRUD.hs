@@ -25,5 +25,15 @@ updateTweet tweetId tweetArr (x : xs)
   | x !! 0 == tweetId = tweetArr : xs
   | otherwise = x : (updateTweet tweetId tweetArr xs)
 
--- Higher Order function to Announce Target tweet found - TODO
-announceTweet :: String -> String -> IO ()
+
+-- Delete tweet if author is "Sudhay"
+deleteSudhayTweets :: [[String]] -> [[String]]
+deleteSudhayTweets [] = []
+deleteSudhayTweets (x:xs)
+  | checkAuthor "Sudhay" (x!!1) = xs
+  | otherwise = x : (deleteSudhayTweets xs)
+
+
+-- Higher Order function to check if the author is a name passed
+checkAuthor :: String -> String -> Bool
+checkAuthor tweetAuthor author = if tweetAuthor==author then True else False
