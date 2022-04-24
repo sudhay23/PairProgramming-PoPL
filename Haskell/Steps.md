@@ -1,0 +1,3 @@
+-   **Step 1:** - Open GHCI
+-   **Step 2:** - `:l withMain.hs`
+-   **Step 3:** - `:main`
