@@ -22,6 +22,19 @@ class Tweet(Id: Int, Author: String, Text: String, Time: String)
 
 object Twitter {
 
+  // check if tweet is present in the list
+  def check(id: Int, list: ListBuffer[Tweet]): Int =
+  {
+    var found = -1
+    // return the index of the tweet if found
+    for (i <- 0 until list.length)
+    {
+      if (list(i).id == id)
+        found = i
+    }
+    return found
+  }
+
   def listTweets(tweets: ListBuffer[Tweet]): Unit = {
     if(tweets.isEmpty){
         println("********************************")
@@ -36,23 +49,24 @@ object Twitter {
     }
   }
 
-  def deleteTweet(tweets: ListBuffer[Tweet], id: Int): Unit = {
+  def deleteTweet(tweets: ListBuffer[Tweet], id: Int, f: (Int, ListBuffer[Tweet])=> Int): Unit = {
     if(tweets.isEmpty){
       println("******************************** TWEETS NOT FOUND********************************")
       return
     }
-    var found = false
-    for (i <- 0 until tweets.length) {
-      if (tweets(i).id == id) {
-        tweets.remove(i)
-        found = true
+    // var found = false
+    // for (i <- 0 until tweets.length) {
+    //   if (tweets(i).id == id) {
+    //     tweets.remove(i)
+    //     found = true
         
-      }
-    }
-    if (!found) {
+    //   }
+    // }
+    if (f(id, tweets) == -1) {
       println("******************************** TWEET NOT FOUND********************************")
       return
     }
+    tweets.remove(f(id, tweets))
     println("******************************** TWEET DELETED ********************************")
   }
 
@@ -127,7 +141,7 @@ object Twitter {
     else if (choice == 2) {
       println("Enter the id of the tweet to delete: ")
       val id = scala.io.StdIn.readInt()
-      deleteTweet(tweets, id)
+      deleteTweet(tweets, id, check)
     }
     else if (choice == 3) {
       println("Enter the id of the tweet to update: ")
